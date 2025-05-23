@@ -12,6 +12,7 @@
 namespace AdvancedCommandLibrary.Trackers;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 internal class ParentCommandTracker : CommandTracker
@@ -19,6 +20,11 @@ internal class ParentCommandTracker : CommandTracker
     internal ParentCommandTracker() : base()
     {
     }
+    internal MethodInfo? LoadGeneratedCommandsExecutor { get; set; }
 
-    internal List<CommandTracker> ChildCommands { get; set; } = new();
+    internal List<CommandTracker> ChildCommands => this._childCommandsIds.Select(childId => CommandManager.Instance.RegisteredCommands[childId]).ToList();
+
+    private List<int> _childCommandsIds { get; set; } = new();
+    internal void UpdateChildren(List<CommandTracker> childIds) => this._childCommandsIds = childIds.Select(x => x.Id).ToList();
+    internal void AddChild(CommandTracker child) => this._childCommandsIds.Add(child.Id);
 }

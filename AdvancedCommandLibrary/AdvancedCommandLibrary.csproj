@@ -78,6 +78,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Attributes\CommandAttribute.cs" />
+        <Compile Include="Attributes\LoadGeneratedCommandsExecutorAttribute.cs" />
         <Compile Include="Attributes\ParentAttribute.cs" />
         <Compile Include="Attributes\ParentCommandAttribute.cs" />
         <Compile Include="Attributes\RequirePermissionsAttribute.cs" />
@@ -85,18 +86,17 @@
         <Compile Include="Config.cs" />
         <Compile Include="Contexts\CommandContext.cs" />
         <Compile Include="Contexts\Helpers\CommandTrackerTreeSearcher.cs" />
-        <Compile Include="Contexts\Helpers\CommandTreeSearcher.cs" />
         <Compile Include="Contexts\Helpers\LoadGeneratedCommandsContext.cs" />
         <Compile Include="Contexts\ParentCommandContext.cs" />
         <Compile Include="Enums\CommandHandlerType.cs" />
         <Compile Include="Enums\LoggingMode.cs" />
+        <Compile Include="Extensions\BitwiseExtensions.cs" />
         <Compile Include="GameCommandModules\AdvancedParentCommand.cs" />
         <Compile Include="GameCommandModules\AdvancedParentPermissionsCommand.cs" />
         <Compile Include="GameCommandModules\ICommandPermission.cs" />
         <Compile Include="GameCommandModules\AdvancedPermissionCommand.cs" />
         <Compile Include="GameCommandModules\Processors\ChildCommandProcessor.cs" />
         <Compile Include="GameCommandModules\Processors\ParentCommandProcessor.cs" />
-        <Compile Include="LoaderModules\AssignChildCommandModule.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Testing\DoubleNestedParentCommandTesting.cs" />

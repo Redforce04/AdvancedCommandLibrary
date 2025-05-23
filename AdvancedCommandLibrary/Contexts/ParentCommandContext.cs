@@ -16,6 +16,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using CommandSystem;
+using Enums;
+using GameCommandModules.Processors;
 using Helpers;
 using LabApi.Features.Console;
 using LabApi.Features.Permissions;
@@ -31,8 +33,13 @@ public class ParentCommandContext : CommandContext
     
     public void RespondWithSubCommands()
     {
-        var searchResult = CommandTreeSearcher.RecursivelySearchCommand(this.CommandInstance, 0);
-        StringBuilder builder = new();
-        this.Response = CommandTreeSearcher.RecursivelyBuildString(ref builder, searchResult, this.Sender, 0).ToString();
+        if (this.CommandInstance is not ParentCommandProcessor cmd)
+            return;
+        Logger.Debug($"Command \"{cmd.Command}\" children: {cmd.AllCommands.Count()}", CommandManager.DebugMode >= LoggingMode.Ludicrous);
+        StringBuilder builder = new ();
+        builder.AppendLine($"Command Usage:");
+        var searchResult = CommandTrackerTreeSearcher.RecursivelySearchCommand(cmd.Tracker, 0);
+        CommandTrackerTreeSearcher.RecursivelyBuildString(ref builder, searchResult, 0);
+        this.Response = builder.ToString();
     }
 }

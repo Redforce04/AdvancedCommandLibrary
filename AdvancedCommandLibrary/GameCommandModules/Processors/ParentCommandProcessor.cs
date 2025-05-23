@@ -24,19 +24,12 @@ internal sealed class ParentCommandProcessor : ParentCommand, IUsageProvider
         try
         {
             this._subscribeMethodToEvent(ref command);
+            if(command.LoadGeneratedCommandsExecutor is not null)
+                this._subscribeToLoadGeneratedCommandsMethod(command.LoadGeneratedCommandsExecutor);
         }
         catch (Exception ex)
         {
             Logger.Warn($"An error occured while trying to subscribe command method to event.");
-            Logger.Debug($"Exception: \n{ex}", CommandManager.DebugMode >= LoggingMode.Debug);
-        }
-        try
-        {
-            this.LoadGeneratedCommands();
-        }
-        catch (Exception ex)
-        {
-            Logger.Warn($"An error occured while trying to load generated commands.");
             Logger.Debug($"Exception: \n{ex}", CommandManager.DebugMode >= LoggingMode.Debug);
         }
     }
@@ -44,6 +37,7 @@ internal sealed class ParentCommandProcessor : ParentCommand, IUsageProvider
     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
     public override void LoadGeneratedCommands()
     {
+        Logger.Debug($"[Parent Command] Command \"{this.Command}\" Registering {this.Tracker.ChildCommands.Count} child commands", CommandManager.DebugMode >= LoggingMode.Ludicrous);
         foreach (var cmd in this.Tracker.ChildCommands)
         {
             if (cmd is not null && cmd.GameCommandInstance is not null)
@@ -58,9 +52,19 @@ internal sealed class ParentCommandProcessor : ParentCommand, IUsageProvider
                     Logger.Warn($"Parent command {cmd.Name} cannot register subcommand {cmd.Name} because an alias of the command has already been registered.");
                     continue;
                 }
-                
-                RegisterCommand(cmd.GameCommandInstance);
+
+                try
+                {
+                    RegisterCommand(cmd.GameCommandInstance);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"An error has occured while registering children for command {cmd.Name}.");
+                    Logger.Debug($"Exception: \n{ex}", CommandManager.DebugMode >= LoggingMode.Insanity);
+                }
             }
+            else 
+                Logger.Debug($"Warning{(cmd is null ? " command is null" : "")}{(cmd?.GameCommandInstance is null ? " command game instance is null" : "")}.", CommandManager.DebugMode >= LoggingMode.Insanity);
         }
         
         if (this.ExecuteLoadGeneratedCommands is null)
@@ -114,6 +118,18 @@ internal sealed class ParentCommandProcessor : ParentCommand, IUsageProvider
         // Create the delegate on the command target class because that's where the
         // method is. This corresponds with `new EventHandler(command.Type.Method)`.
         Delegate handler = Delegate.CreateDelegate(eventInfo.EventHandlerType, command.Method);
+        
+        // Assign the event handler. This corresponds with `this.OnExecute += command.Type.Method`.
+        eventInfo.AddEventHandler(this, handler);
+    }
+    
+    private void _subscribeToLoadGeneratedCommandsMethod(MethodInfo executor)
+    {
+        EventInfo? eventInfo = typeof(ParentCommandProcessor).GetEvent(nameof(this.ExecuteLoadGeneratedCommands), BindingFlags.Public | BindingFlags.Instance)!;
+        
+        // Create the delegate on the command target class because that's where the
+        // method is. This corresponds with `new EventHandler(command.Type.Method)`.
+        Delegate handler = Delegate.CreateDelegate(eventInfo.EventHandlerType, executor);
         
         // Assign the event handler. This corresponds with `this.OnExecute += command.Type.Method`.
         eventInfo.AddEventHandler(this, handler);

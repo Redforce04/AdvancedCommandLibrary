@@ -39,6 +39,7 @@ internal sealed class ChildCommandProcessor : ICommand, IUsageProvider
             Logger.Debug($"Command event handler is null when it shouldn't be", CommandManager.DebugMode >= LoggingMode.Debug);
             return false;
         }
+        
         CommandContext ev = new(args, sender, response, this, this.Tracker.ParentTrackerInstance?.GameCommandInstance as ParentCommand, this.Tracker.PermissionsRequirementTracker);
         try
         {

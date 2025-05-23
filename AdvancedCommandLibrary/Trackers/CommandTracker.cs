@@ -23,18 +23,24 @@ internal class CommandTracker
         if (id == -1)
         {
             this.Id = LastId;
-            LastId = LastId++;
+            LastId += 1;
         }
         else
             this.Id = id;
     }
 
-    protected private static int LastId { get; set; } = 0;
+    private static int LastId { get; set; } = 0;
     internal int Id { get; set; }
     internal ICommand GameCommandInstance { get; set; }
     internal MethodInfo Method { get; init; }
     internal Assembly Assembly { get; init; }
-    internal ParentCommandTracker? ParentTrackerInstance { get; set; } 
+
+    internal ParentCommandTracker? ParentTrackerInstance => _parentTrackerId is -1 ? null : CommandManager.Instance.RegisteredCommands[this._parentTrackerId] as ParentCommandTracker;
+
+    private int _parentTrackerId = -1;
+
+    internal void UpdateParentTracker(ParentCommandTracker? tracker) => this._parentTrackerId = tracker?.Id ?? -1;
+    
     internal PermissionsTracker? PermissionsRequirementTracker { get; init; }
 
     internal string Name { get; init; } 

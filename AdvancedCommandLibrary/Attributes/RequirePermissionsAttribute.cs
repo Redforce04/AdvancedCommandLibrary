@@ -12,26 +12,16 @@
 namespace AdvancedCommandLibrary.Attributes;
 
 using System;
+using Contexts;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class RequirePermissionsAttribute : Attribute
 {
-    public RequirePermissionsAttribute(params string[] permissionNodes)
+    protected RequirePermissionsAttribute()
     {
-        this.RequiredPermissionNodes = permissionNodes;
     }
 
-    public RequirePermissionsAttribute(PlayerPermissions permission)
+    public virtual void CheckPermissions(ProcessPermissionsArgs args)
     {
-        this.RequiredPlayerPermissions = permission;
     }
-    
-    public RequirePermissionsAttribute(PlayerPermissions permission, params string[] permissionNodes)
-    {
-        this.RequiredPlayerPermissions = permission;
-        this.RequiredPermissionNodes = permissionNodes;
-    }
-    
-    public string[]? RequiredPermissionNodes { get; }
-    public PlayerPermissions? RequiredPlayerPermissions { get; }
 }

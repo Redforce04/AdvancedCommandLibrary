@@ -67,31 +67,11 @@ public class CommandContext : EventArgs
                 Logger.Debug($"Permissions for command {this.CommandInstance.Command} is null. Skipping Permissions Check.", debug);
                 return true;
             }
-            bool hasRequiredPermissionNodes = this.PermissionsTracker.RequiredPermissionNodes.Length == 0 || Sender.HasPermissions(this.PermissionsTracker.RequiredPermissionNodes);
-            bool hasRequiredPlayerPermissions = this.PermissionsTracker.RequiredPlayerPermissions == 0 || Sender.CheckPermission(this.PermissionsTracker.RequiredPlayerPermissions);
-            if (!hasRequiredPlayerPermissions || !hasRequiredPermissionNodes)
-            { 
-                Logger.Debug($"Sender doesn't have permissions for command {this.CommandInstance.Command}. " +
-                    $"\n[PermissionNodesCheck: {hasRequiredPermissionNodes}, PlayerPermissionsCheck: {hasRequiredPlayerPermissions}] " +
-                    $"\n[Permission Nodes: {String.Join(", ", this.PermissionsTracker.RequiredPermissionNodes)} | PlayerPermissions: {this.PermissionsTracker.RequiredPlayerPermissions}]", debug);
-                this.Response = $"You do not have permission to execute this command.";
-                if (CommandManager.ShowPermissionsBranches || debug)
-                {
-                    this.Response += " [Required Permissions: ";
-                    foreach (var requiredPermissionsNode in this.PermissionsTracker.RequiredPermissionNodes)
-                        this.Response += $" {requiredPermissionsNode}, ";
-                    if (this.PermissionsTracker.RequiredPermissionNodes.Length > 0)
-                        this.Response = this.Response.Substring(0, this.Response.Length - 2);
-                    foreach (Enum enumValue in Enum.GetValues(typeof(PlayerPermissions)))
-                    {
-                        if (this.PermissionsTracker.RequiredPlayerPermissions.HasFlag(enumValue))
-                            this.Response += $"{enumValue}, ";
-                    }
-                    if ((int)this.PermissionsTracker.RequiredPlayerPermissions > 0)
-                        this.Response = this.Response.Substring(0, this.Response.Length - 2);
-                    this.Response += "]";
-                }
-                this.Allowed = false;
+            ProcessPermissionsArgs args = new(this.Sender);
+            this.PermissionsTracker.ProcessPermissions(args);
+            if (!args.IsAllowed)
+            {
+                this.Response = args.Response;
                 return false;
             }
         }

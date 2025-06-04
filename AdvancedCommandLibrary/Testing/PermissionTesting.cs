@@ -37,7 +37,7 @@ public class PermissionTesting
         context.RespondWithSubCommands();
     }
     
-    [RequirePermissions("developer")]
+    [RequirePermissionNodes("developer")]
     [Parent(typeof(PermissionTesting),nameof(PermissionNodesBaseCommand))]
     [Command("pass", "Passes the player permissions checker.", [], [])]
     public static void PermissionNodesPass(CommandContext context)
@@ -50,7 +50,7 @@ public class PermissionTesting
         context.Allow("Test Passed. [Command Passed]");
     }
     
-    [RequirePermissions("MissingPermissionsNode")]
+    [RequirePermissionNodes("MissingPermissionsNode")]
     [Parent(typeof(PermissionTesting),nameof(PermissionNodesBaseCommand))]
     [Command("fail", "Fails the player permissions checker.", [], [])]
     public static void PermissionNodesFail(CommandContext context)
@@ -63,7 +63,7 @@ public class PermissionTesting
         context.Allow("Test Failed. [Command Passed]");
     }
     
-    [RequirePermissions(PlayerPermissions.AdminChat)]
+    [RequirePlayerPermissions(PlayerPermissions.AdminChat)]
     [Parent(typeof(PermissionTesting),nameof(PlayerPermissionsBaseCommand))]
     [Command("pass", "Passes the player permissions checker.", [], [])]
     public static void PlayerPermissionPass(CommandContext context)
@@ -76,7 +76,7 @@ public class PermissionTesting
         context.Allow("Test Passed. [Command Passed]");
     }
     
-    [RequirePermissions(PlayerPermissions.SetGroup | PlayerPermissions.AdminChat)]
+    [RequirePlayerPermissions(PlayerPermissions.SetGroup | PlayerPermissions.AdminChat)]
     [Parent(typeof(PermissionTesting),nameof(PlayerPermissionsBaseCommand))]
     [Command("fail", "Fails the player permissions checker.", [], [])]
     public static void PlayerPermissionFail(CommandContext context)

@@ -81,13 +81,16 @@
         <Compile Include="Attributes\LoadGeneratedCommandsExecutorAttribute.cs" />
         <Compile Include="Attributes\ParentAttribute.cs" />
         <Compile Include="Attributes\ParentCommandAttribute.cs" />
+        <Compile Include="Attributes\RequirePermissionNodesAttribute.cs" />
         <Compile Include="Attributes\RequirePermissionsAttribute.cs" />
+        <Compile Include="Attributes\RequirePlayerPermissionsAttribute.cs" />
         <Compile Include="CommandManager.cs" />
         <Compile Include="Config.cs" />
         <Compile Include="Contexts\CommandContext.cs" />
         <Compile Include="Contexts\Helpers\CommandTrackerTreeSearcher.cs" />
         <Compile Include="Contexts\Helpers\LoadGeneratedCommandsContext.cs" />
         <Compile Include="Contexts\ParentCommandContext.cs" />
+        <Compile Include="Contexts\ProcessPermissionsArgs.cs" />
         <Compile Include="Enums\CommandHandlerType.cs" />
         <Compile Include="Enums\LoggingMode.cs" />
         <Compile Include="Extensions\BitwiseExtensions.cs" />
@@ -103,6 +106,7 @@
         <Compile Include="Testing\NestedParentCommandTesting.cs" />
         <Compile Include="Testing\PermissionTesting.cs" />
         <Compile Include="Testing\SoloCommandTesting.cs" />
+        <Compile Include="Testing\TestCommand.cs" />
         <Compile Include="Trackers\CommandTracker.cs" />
         <Compile Include="Trackers\ParentCommandTracker.cs" />
         <Compile Include="Trackers\PermissionsTracker.cs" />

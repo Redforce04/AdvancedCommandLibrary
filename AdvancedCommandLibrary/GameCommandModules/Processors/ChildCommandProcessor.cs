@@ -63,11 +63,9 @@ internal sealed class ChildCommandProcessor : ICommand, IUsageProvider
         // Create the delegate on the command target class because that's where the
         // method is. This corresponds with `new EventHandler(command.Type.Method)`.
         Delegate handler = Delegate.CreateDelegate(eventInfo.EventHandlerType, command.Method);
-        
-        
+
         // Assign the event handler. This corresponds with `this.OnExecute += command.Type.Method`.
         eventInfo.AddEventHandler(this, handler);
-                
     }
 
     public delegate void ExecuteCommandDelegateType (CommandContext context);

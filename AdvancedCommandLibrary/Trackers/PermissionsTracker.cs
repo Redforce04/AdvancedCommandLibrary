@@ -16,26 +16,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Attributes;
+using CommandSystem;
+using Contexts;
 using Extensions;
+using LabApi.Features.Wrappers;
 
 internal class PermissionsTracker
 {
     internal PermissionsTracker(List<RequirePermissionsAttribute> commandAttribute)
     {
-        this.RequiredPlayerPermissions = (PlayerPermissions) 0;
-        List<string> permsNodes = new ();
         foreach (RequirePermissionsAttribute attribute in commandAttribute)
         {
-            if(attribute.RequiredPermissionNodes is not null)
-                permsNodes.AddRange(attribute.RequiredPermissionNodes);
-            PlayerPermissions newPerms = attribute.RequiredPlayerPermissions ?? 0;
-            if(attribute.RequiredPlayerPermissions is not null)
-                this.RequiredPlayerPermissions = this.RequiredPlayerPermissions.Include(newPerms);
+            this.OnProcessingPermissions += attribute.CheckPermissions;
         }
-        this.RequiredPermissionNodes = permsNodes.ToArray();
     }
-        
-    internal string[] RequiredPermissionNodes { get; init; }
-    internal PlayerPermissions RequiredPlayerPermissions { get; init; }
-    
+    public event ProcessingPermissions? OnProcessingPermissions;
+    public delegate void ProcessingPermissions(ProcessPermissionsArgs args);
+
+    internal void ProcessPermissions(ProcessPermissionsArgs args)
+    {
+        try
+        {
+            OnProcessingPermissions?.Invoke(args);
+        }
+        catch (Exception)
+        {
+            // Unused.
+        }
+    }
 }

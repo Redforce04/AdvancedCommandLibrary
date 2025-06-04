@@ -13,13 +13,9 @@ namespace AdvancedCommandLibrary.Trackers;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Attributes;
-using CommandSystem;
 using Contexts;
-using Extensions;
-using LabApi.Features.Wrappers;
+using LabApi.Features.Console;
 
 internal class PermissionsTracker
 {
@@ -37,10 +33,12 @@ internal class PermissionsTracker
     {
         try
         {
-            OnProcessingPermissions?.Invoke(args);
+            this.OnProcessingPermissions?.Invoke(args);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Logger.Warn($"An exception occured while processing permissions.");
+            Logger.Debug($"Exception: {e}");
             // Unused.
         }
     }

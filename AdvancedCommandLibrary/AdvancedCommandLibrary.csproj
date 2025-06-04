@@ -1,126 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{3E27B490-79AE-418E-B851-936F9AA39C5C}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>AdvancedCommandLibrary</RootNamespace>
-        <AssemblyName>AdvancedCommandLibrary</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <TargetFramework>net481</TargetFramework>
+        <AssemblyTitle>AdvancedCommandLibrary</AssemblyTitle>
+        <Product>AdvancedCommandLibrary</Product>
+        <Copyright>Copyright © 2025</Copyright>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
+        <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+        <DebugType>embedded</DebugType>
+        <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <Platforms>x64;AnyCPU</Platforms>
+        <Configurations>Debug;Release;Local</Configurations>
+        <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+        <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Local|AnyCPU'">
+        <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup>
-        <DebugType>Embedded</DebugType>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-          <HintPath>..\References\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp-firstpass">
-          <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
-        </Reference>
-        <Reference Include="CommandSystem.Core">
-          <HintPath>..\References\CommandSystem.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="LabApi">
-          <HintPath>..\References\LabApi.dll</HintPath>
-        </Reference>
-        <Reference Include="Mirror">
-          <HintPath>..\References\Mirror.dll</HintPath>
-        </Reference>
-        <Reference Include="NorthwoodLib">
-          <HintPath>..\References\NorthwoodLib.dll</HintPath>
-        </Reference>
-        <Reference Include="Pooling">
-          <HintPath>..\References\Pooling.dll</HintPath>
-        </Reference>
-        <Reference Include="ProjectMER">
-          <HintPath>..\References\ProjectMER.dll</HintPath>
-        </Reference>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Xml"/>
-        <Reference Include="Unity.Mathematics">
-          <HintPath>..\References\Unity.Mathematics.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\References\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.PhysicsModule">
-          <HintPath>..\References\UnityEngine.PhysicsModule.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Attributes\CommandAttribute.cs" />
-        <Compile Include="Attributes\LoadGeneratedCommandsExecutorAttribute.cs" />
-        <Compile Include="Attributes\ParentAttribute.cs" />
-        <Compile Include="Attributes\ParentCommandAttribute.cs" />
-        <Compile Include="Attributes\RequirePermissionNodesAttribute.cs" />
-        <Compile Include="Attributes\RequirePermissionsAttribute.cs" />
-        <Compile Include="Attributes\RequirePlayerPermissionsAttribute.cs" />
-        <Compile Include="CommandManager.cs" />
-        <Compile Include="Config.cs" />
-        <Compile Include="Contexts\CommandContext.cs" />
-        <Compile Include="Contexts\Helpers\CommandTrackerTreeSearcher.cs" />
-        <Compile Include="Contexts\Helpers\LoadGeneratedCommandsContext.cs" />
-        <Compile Include="Contexts\ParentCommandContext.cs" />
-        <Compile Include="Contexts\ProcessPermissionsArgs.cs" />
-        <Compile Include="Enums\CommandHandlerType.cs" />
-        <Compile Include="Enums\LoggingMode.cs" />
-        <Compile Include="Extensions\BitwiseExtensions.cs" />
-        <Compile Include="GameCommandModules\AdvancedParentCommand.cs" />
-        <Compile Include="GameCommandModules\AdvancedParentPermissionsCommand.cs" />
-        <Compile Include="GameCommandModules\ICommandPermission.cs" />
-        <Compile Include="GameCommandModules\AdvancedPermissionCommand.cs" />
-        <Compile Include="GameCommandModules\Processors\ChildCommandProcessor.cs" />
-        <Compile Include="GameCommandModules\Processors\ParentCommandProcessor.cs" />
-        <Compile Include="Plugin.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Testing\DoubleNestedParentCommandTesting.cs" />
-        <Compile Include="Testing\NestedParentCommandTesting.cs" />
-        <Compile Include="Testing\PermissionTesting.cs" />
-        <Compile Include="Testing\SoloCommandTesting.cs" />
-        <Compile Include="Testing\TestCommand.cs" />
-        <Compile Include="Trackers\CommandTracker.cs" />
-        <Compile Include="Trackers\ParentCommandTracker.cs" />
-        <Compile Include="Trackers\PermissionsTracker.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <PackageReference Include="Northwood.LabAPI" Version="1.0.2" />
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
 
+    <ItemGroup>
+        <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" Private="False" />
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" />
+        <Reference Include="Assembly-CSharp" HintPath="$(SL_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="True" />
+        <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" Private="False" />
+        <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" Private="False" />
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" Private="False" />
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" />
+        <Reference Include="UnityEngine.PhysicsModule" HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="False" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="BepInEx.AssemblyPublicizer" Version="0.5.0-beta.1" ExcludeAssets="RUNTIME" />
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.5.0-beta.1" ExcludeAssets="RUNTIME" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
+        <PackageReference Include="Northwood.LabAPI" Version="1.0.2" ExcludeAssets="RUNTIME" />
+        <PackageReference Include="System.Buffers" Version="4.5.1" ExcludeAssets="RUNTIME" />
+        <PackageReference Include="System.Memory" Version="4.5.5" ExcludeAssets="RUNTIME" />
+        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" ExcludeAssets="RUNTIME" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" ExcludeAssets="RUNTIME" />
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SL_REFERENCES)\$(ProjectName).dll&quot;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).xml&quot; &quot;$(SL_REFERENCES)\$(ProjectName).xml&quot;&#xA;" />
+    </Target>
 </Project>
